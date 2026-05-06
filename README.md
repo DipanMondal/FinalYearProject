@@ -48,3 +48,24 @@ API_HOST=127.0.0.1
 API_PORT=8000
 DEBUG=True
 ```
+
+## DATA INGESTION PIPELINE
+```
+State Name
+    ↓
+Coordinate Resolver
+    ↓
+NASA POWER API Client
+    ↓
+Response Validation
+    ↓
+Transformation Layer
+    ↓
+Database Storage
+    ↓
+Metadata Generation
+    ↓
+State Lifecycle Update
+    ↓
+Pipeline Logging
+```

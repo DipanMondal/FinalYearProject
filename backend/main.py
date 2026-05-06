@@ -6,6 +6,10 @@ from app.database import init_db
 
 from app.api.routes.health import router as health_router
 from app.api.routes.states import router as states_router
+from app.api.routes.ingestion import router as ingestion_router
+from app.api.routes.features import router as feature_router
+
+
 
 from app.core.exceptions import StateNotFoundException
 
@@ -34,6 +38,8 @@ async def state_not_found_handler(
 
 app.include_router(health_router)
 app.include_router(states_router)
+app.include_router(ingestion_router)
+app.include_router(feature_router)
 
 
 @app.get("/")
