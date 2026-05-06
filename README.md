@@ -33,3 +33,18 @@ climate-intelligence-platform/
 ├── docs/
 └── README.md
 ```
+
+## Sample .env
+```
+APP_NAME=Climate Intelligence Platform
+
+DB_PATH=backend/data/climate.db
+
+ARTIFACTS_DIR=backend/artifacts
+MODELS_DIR=backend/models_store
+LOGS_DIR=backend/logs
+
+API_HOST=127.0.0.1
+API_PORT=8000
+DEBUG=True
+```
