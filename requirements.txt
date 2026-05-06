@@ -3,3 +3,14 @@ uvicorn
 sqlalchemy 
 pydantic 
 python-dotenv
+pandas 
+numpy 
+scipy 
+statsmodels 
+scikit-learn
+pmdarima
+streamlit
+plotly
+meteostat 
+requests
+loguru
