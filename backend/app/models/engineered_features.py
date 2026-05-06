@@ -20,6 +20,12 @@ class EngineeredFeatures(Base):
 
     year = Column(Integer, nullable=False)
     month = Column(Integer, nullable=False)
+    
+    avg_temperature = Column(Float)
+
+    rainfall = Column(Float)
+
+    humidity = Column(Float)
 
     temp_anomaly = Column(Float)
     rainfall_anomaly = Column(Float)

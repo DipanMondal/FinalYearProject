@@ -155,6 +155,18 @@ def save_engineered_features(
 
             year=int(row["year"]),
             month=int(row["month"]),
+            
+            avg_temperature=float(
+                row["avg_temperature"]
+            ),
+
+            rainfall=float(
+                row["rainfall"]
+            ),
+
+            humidity=float(
+                row["humidity"]
+            ),
 
             temp_anomaly=float(row["temp_anomaly"]),
 

@@ -33,7 +33,7 @@ climate-intelligence-platform/
 ├── docs/
 └── README.md
 ```
-
+---
 ## Sample .env
 ```
 APP_NAME=Climate Intelligence Platform
@@ -48,7 +48,7 @@ API_HOST=127.0.0.1
 API_PORT=8000
 DEBUG=True
 ```
-
+---
 ## DATA INGESTION PIPELINE
 ```
 State Name
@@ -67,5 +67,26 @@ Metadata Generation
     ↓
 State Lifecycle Update
     ↓
+Pipeline Logging
+```
+---
+## TRAINING PIPELINE
+```
+State
+   ↓
+Load Engineered Features
+   ↓
+Train/Test Split
+   ↓
+SARIMAX Grid Search
+   ↓
+Evaluate Metrics
+   ↓
+Save Model
+   ↓
+Update Model Registry
+   ↓
+Update State Status
+   ↓
 Pipeline Logging
 ```

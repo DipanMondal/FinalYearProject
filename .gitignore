@@ -8,5 +8,5 @@ node_modules/
 
 artifact/
 logs/
-model_store/
+models_store/
 data/
