@@ -89,12 +89,30 @@ def load_feature_dataframe(
 
             "temp_rolling_6":
                 row.temp_rolling_6,
+                
+            "rainfall_rolling_3":
+                row.rainfall_rolling_3,
+
+            "humidity_rolling_3":
+                row.humidity_rolling_3,
 
             "temp_lag_1":
                 row.temp_lag_1,
 
             "temp_lag_3":
                 row.temp_lag_3,
+                
+            "rainfall_lag_1":
+                row.rainfall_lag_1,
+
+            "rainfall_lag_3":
+                row.rainfall_lag_3,
+
+            "humidity_lag_1":
+                row.humidity_lag_1,
+
+            "humidity_lag_3":
+                row.humidity_lag_3,
 
             "seasonal_sin":
                 row.seasonal_sin,
@@ -236,17 +254,45 @@ def train_state_variable_model(
             "Not enough data for training"
         )
 
-    exogenous_columns = [
+    if target_column == "avg_temperature":
 
-        "temp_rolling_3",
-        "temp_rolling_6",
+        exogenous_columns = [
 
-        "temp_lag_1",
-        "temp_lag_3",
+            "temp_rolling_3",
+            "temp_rolling_6",
 
-        "seasonal_sin",
-        "seasonal_cos"
-    ]
+            "temp_lag_1",
+            "temp_lag_3",
+
+            "seasonal_sin",
+            "seasonal_cos"
+        ]
+
+    elif target_column == "rainfall":
+
+        exogenous_columns = [
+
+            "rainfall_rolling_3",
+
+            "rainfall_lag_1",
+            "rainfall_lag_3",
+
+            "seasonal_sin",
+            "seasonal_cos"
+        ]
+
+    else:
+
+        exogenous_columns = [
+
+            "humidity_rolling_3",
+
+            "humidity_lag_1",
+            "humidity_lag_3",
+
+            "seasonal_sin",
+            "seasonal_cos"
+        ]
 
     y = df[target_column]
 

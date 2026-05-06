@@ -33,7 +33,9 @@ climate-intelligence-platform/
 ├── docs/
 └── README.md
 ```
+
 ---
+
 ## Sample .env
 ```
 APP_NAME=Climate Intelligence Platform
@@ -48,7 +50,9 @@ API_HOST=127.0.0.1
 API_PORT=8000
 DEBUG=True
 ```
+
 ---
+
 ## DATA INGESTION PIPELINE
 ```
 State Name
@@ -69,7 +73,9 @@ State Lifecycle Update
     ↓
 Pipeline Logging
 ```
+
 ---
+
 ## TRAINING PIPELINE
 ```
 State
@@ -89,4 +95,25 @@ Update Model Registry
 Update State Status
    ↓
 Pipeline Logging
+```
+
+---
+
+## FORECASTING PIPELINE
+```
+Load historical features
+       ↓
+Predict next month
+       ↓
+Append prediction to dataframe
+       ↓
+Recompute rolling features
+       ↓
+Recompute lag features
+       ↓
+Generate next seasonal encoding
+       ↓
+Predict next month
+       ↓
+Repeat recursively
 ```

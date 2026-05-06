@@ -86,6 +86,26 @@ def generate_features(df: pd.DataFrame):
         df["avg_temperature"]
         .shift(3)
     )
+    
+    df["rainfall_lag_1"] = (
+        df["rainfall"]
+        .shift(1)
+    )
+
+    df["rainfall_lag_3"] = (
+        df["rainfall"]
+        .shift(3)
+    )
+
+    df["humidity_lag_1"] = (
+        df["humidity"]
+        .shift(1)
+    )
+
+    df["humidity_lag_3"] = (
+        df["humidity"]
+        .shift(3)
+    )
 
     # -----------------------------
     # Seasonal Encoding
@@ -201,6 +221,30 @@ def save_engineered_features(
             temp_lag_3=float(
                 row["temp_lag_3"]
             ) if pd.notna(row["temp_lag_3"]) else None,
+            
+            rainfall_lag_1=float(
+                row["rainfall_lag_1"]
+            ) if pd.notna(
+                row["rainfall_lag_1"]
+            ) else None,
+
+            rainfall_lag_3=float(
+                row["rainfall_lag_3"]
+            ) if pd.notna(
+                row["rainfall_lag_3"]
+            ) else None,
+
+            humidity_lag_1=float(
+                row["humidity_lag_1"]
+            ) if pd.notna(
+                row["humidity_lag_1"]
+            ) else None,
+
+            humidity_lag_3=float(
+                row["humidity_lag_3"]
+            ) if pd.notna(
+                row["humidity_lag_3"]
+            ) else None,
 
             seasonal_sin=float(row["seasonal_sin"]),
             seasonal_cos=float(row["seasonal_cos"])

@@ -40,6 +40,12 @@ class EngineeredFeatures(Base):
 
     temp_lag_1 = Column(Float)
     temp_lag_3 = Column(Float)
+    
+    rainfall_lag_1 = Column(Float)
+    rainfall_lag_3 = Column(Float)
+
+    humidity_lag_1 = Column(Float)
+    humidity_lag_3 = Column(Float)
 
     seasonal_sin = Column(Float)
     seasonal_cos = Column(Float)
