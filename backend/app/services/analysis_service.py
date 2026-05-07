@@ -38,6 +38,16 @@ from app.utils.analysis_utils import (
 
     identify_extreme_years,
 
+    detect_heatwaves,
+
+    detect_extreme_rainfall,
+
+    detect_high_humidity_events,
+
+    calculate_volatility_analysis,
+
+    calculate_anomaly_frequency,
+
     MONTH_NAMES
 )
 
@@ -224,6 +234,26 @@ def generate_analysis_report(
         )
     )
     
+    extreme_heatwaves = (
+        detect_heatwaves(df)
+    )
+
+    extreme_rainfall = (
+        detect_extreme_rainfall(df)
+    )
+
+    high_humidity_events = (
+        detect_high_humidity_events(df)
+    )
+
+    volatility_analysis = (
+        calculate_volatility_analysis(df)
+    )
+
+    anomaly_frequency = (
+        calculate_anomaly_frequency(df)
+    )
+    
     report = {
 
         "state": state,
@@ -247,7 +277,25 @@ def generate_analysis_report(
             decadal_analysis,
 
         "extreme_years":
-            extreme_years
+            extreme_years,
+            
+        "extreme_events": {
+
+            "heatwaves":
+                extreme_heatwaves,
+
+            "extreme_rainfall":
+                extreme_rainfall,
+
+            "high_humidity":
+                high_humidity_events
+        },
+
+        "volatility_analysis":
+            volatility_analysis,
+
+        "anomaly_frequency":
+            anomaly_frequency,
     }
 
     # -----------------------------

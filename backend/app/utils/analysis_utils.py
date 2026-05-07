@@ -283,5 +283,220 @@ def identify_extreme_years(
     }
     
     
+# Heat wave detection
+def detect_heatwaves(
+    df: pd.DataFrame
+):
 
+    threshold = (
+        df["avg_temperature"]
+        .quantile(0.95)
+    )
+
+    heatwave_df = df[
+        df["avg_temperature"] > threshold
+    ]
+
+    events = []
+
+    for _, row in heatwave_df.iterrows():
+
+        events.append({
+
+            "year":
+                int(row["year"]),
+
+            "month":
+                int(row["month"]),
+
+            "temperature":
+                float(
+                    row["avg_temperature"]
+                )
+        })
+
+    return {
+
+        "threshold":
+            float(threshold),
+
+        "event_count":
+            len(events),
+
+        "events":
+            events
+    }
     
+    
+# EXTREME RAINFALL DETECTION
+def detect_extreme_rainfall(
+    df: pd.DataFrame
+):
+
+    threshold = (
+        df["rainfall"]
+        .quantile(0.95)
+    )
+
+    rainfall_df = df[
+        df["rainfall"] > threshold
+    ]
+
+    events = []
+
+    for _, row in rainfall_df.iterrows():
+
+        events.append({
+
+            "year":
+                int(row["year"]),
+
+            "month":
+                int(row["month"]),
+
+            "rainfall":
+                float(row["rainfall"])
+        })
+
+    return {
+
+        "threshold":
+            float(threshold),
+
+        "event_count":
+            len(events),
+
+        "events":
+            events
+    }
+
+
+# HIGH HUMIDITY EVENTS
+def detect_high_humidity_events(
+    df: pd.DataFrame
+):
+
+    threshold = (
+        df["humidity"]
+        .quantile(0.95)
+    )
+
+    humidity_df = df[
+        df["humidity"] > threshold
+    ]
+
+    events = []
+
+    for _, row in humidity_df.iterrows():
+
+        events.append({
+
+            "year":
+                int(row["year"]),
+
+            "month":
+                int(row["month"]),
+
+            "humidity":
+                float(row["humidity"])
+        })
+
+    return {
+
+        "threshold":
+            float(threshold),
+
+        "event_count":
+            len(events),
+
+        "events":
+            events
+    } 
+
+
+# Volatality
+def calculate_volatility_analysis(
+    df: pd.DataFrame
+):
+
+    temperature_volatility = (
+        df["avg_temperature"]
+        .std()
+    )
+
+    rainfall_volatility = (
+        df["rainfall"]
+        .std()
+    )
+
+    humidity_volatility = (
+        df["humidity"]
+        .std()
+    )
+
+    return {
+
+        "temperature_volatility":
+            float(
+                temperature_volatility
+            ),
+
+        "rainfall_volatility":
+            float(
+                rainfall_volatility
+            ),
+
+        "humidity_volatility":
+            float(
+                humidity_volatility
+            )
+    }
+
+
+# ANOMALY FREQUENCY ANALYSIS
+def calculate_anomaly_frequency(
+    df: pd.DataFrame
+):
+
+    temp_threshold = (
+        df["temp_anomaly"]
+        .std()
+    )
+
+    rainfall_threshold = (
+        df["rainfall_anomaly"]
+        .std()
+    )
+
+    humidity_threshold = (
+        df["humidity_anomaly"]
+        .std()
+    )
+
+    temp_events = df[
+        abs(df["temp_anomaly"])
+        > temp_threshold
+    ]
+
+    rainfall_events = df[
+        abs(df["rainfall_anomaly"])
+        > rainfall_threshold
+    ]
+
+    humidity_events = df[
+        abs(df["humidity_anomaly"])
+        > humidity_threshold
+    ]
+
+    return {
+
+        "temperature_anomaly_events":
+            len(temp_events),
+
+        "rainfall_anomaly_events":
+            len(rainfall_events),
+
+        "humidity_anomaly_events":
+            len(humidity_events)
+    }    
+  
