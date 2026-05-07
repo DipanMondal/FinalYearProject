@@ -117,3 +117,57 @@ Predict next month
        ↓
 Repeat recursively
 ```
+---
+
+## FRONTEND & DASHBOARD
+```
+Dashboard/
+│
+├── Home Page
+│
+├── State Overview
+│
+├── Seasonal Climate Explorer
+│
+├── Climate Change Trends
+│
+├── Extreme Events & Risk
+│
+├── Forecasting Center
+│
+└── Data & Model Management
+```
+---
+
+```
+frontend/
+
+├── app.py
+
+├── pages/
+
+│   ├── 1_Home.py
+│   ├── 2_State_Overview.py
+│   ├── 3_Seasonal_Explorer.py
+│   ├── 4_Climate_Trends.py
+│   ├── 5_Extreme_Events.py
+│   ├── 6_Forecasting.py
+│   └── 7_Data_Management.py
+
+├── services/
+│   └── api_client.py
+
+├── components/
+│   ├── sidebar.py
+│   ├── kpi_cards.py
+│   └── charts.py
+
+├── utils/
+│   ├── constants.py
+│   └── helpers.py
+
+├── assets/
+│
+└── .streamlit/
+    └── config.toml
+```

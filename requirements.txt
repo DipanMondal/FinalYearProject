@@ -12,6 +12,7 @@ scikit-learn
 pmdarima
 streamlit
 plotly
+pydeck
 meteostat 
 requests
 loguru
