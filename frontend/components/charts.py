@@ -196,3 +196,117 @@ def render_decadal_bar_chart(
 
         use_container_width=True
     )
+    
+    
+def render_event_timeline(
+
+    events,
+
+    value_key,
+
+    title,
+
+    y_label
+):
+
+    if not events:
+
+        st.warning(
+            "No events detected."
+        )
+
+        return
+
+    df = pd.DataFrame(events)
+
+    df["date"] = pd.to_datetime({
+
+        "year": df["year"],
+
+        "month": df["month"],
+
+        "day": 1
+    })
+
+    fig = px.scatter(
+
+        df,
+
+        x="date",
+
+        y=value_key,
+
+        size=value_key,
+
+        title=title
+    )
+
+    fig.update_layout(
+
+        height=500,
+
+        xaxis_title="Date",
+
+        yaxis_title=y_label
+    )
+
+    st.plotly_chart(
+
+        fig,
+
+        use_container_width=True
+    )
+    
+    
+def render_volatility_chart(
+    volatility_data
+):
+
+    df = pd.DataFrame({
+
+        "Metric": [
+
+            "Temperature",
+
+            "Rainfall",
+
+            "Humidity"
+        ],
+
+        "Volatility": [
+
+            volatility_data[
+                "temperature_volatility"
+            ],
+
+            volatility_data[
+                "rainfall_volatility"
+            ],
+
+            volatility_data[
+                "humidity_volatility"
+            ]
+        ]
+    })
+
+    fig = px.bar(
+
+        df,
+
+        x="Metric",
+
+        y="Volatility",
+
+        title="Climate Volatility"
+    )
+
+    fig.update_layout(
+        height=500
+    )
+
+    st.plotly_chart(
+
+        fig,
+
+        use_container_width=True
+    )
