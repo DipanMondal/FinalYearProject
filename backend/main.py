@@ -10,6 +10,7 @@ from app.api.routes.ingestion import router as ingestion_router
 from app.api.routes.features import router as feature_router
 from app.api.routes.training import router as training_router
 from app.api.routes.forecast import router as forecast_router
+from app.api.routes.analysis import router as analysis_router
 
 
 
@@ -44,6 +45,7 @@ app.include_router(ingestion_router)
 app.include_router(feature_router)
 app.include_router(training_router)
 app.include_router(forecast_router)
+app.include_router(analysis_router)
 
 
 @app.get("/")

@@ -19,9 +19,9 @@ def create_or_update_state_status(
 
     if existing:
 
-        existing.ingested = ingested
-        existing.trained = trained
-        existing.analysed = analysed
+        existing.ingested = (ingested or existing.ingested)
+        existing.trained = (trained or existing.trained)
+        existing.analysed = (analysed or existing.analysed)
 
     else:
 
