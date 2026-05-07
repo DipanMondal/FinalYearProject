@@ -42,16 +42,17 @@ def render_historical_chart(
     
     
 def render_trend_chart(
-    yearly_df,
+    df,
+    x_column,
     value_column,
     title
 ):
 
     fig = px.scatter(
 
-        yearly_df,
+        df,
 
-        x=yearly_df.columns[0],
+        x=x_column,
 
         y=value_column,
 
@@ -146,6 +147,47 @@ def render_seasonal_signature_chart(
         height=600,
 
         hovermode="x unified"
+    )
+
+    st.plotly_chart(
+
+        fig,
+
+        use_container_width=True
+    )
+    
+    
+def render_decadal_bar_chart(
+
+    df,
+
+    x_column,
+
+    y_column,
+
+    title,
+
+    y_label
+):
+
+    fig = px.bar(
+
+        df,
+
+        x=x_column,
+
+        y=y_column,
+
+        title=title
+    )
+
+    fig.update_layout(
+
+        height=500,
+
+        xaxis_title="Decade",
+
+        yaxis_title=y_label
     )
 
     st.plotly_chart(

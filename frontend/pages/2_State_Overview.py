@@ -158,6 +158,8 @@ render_trend_chart(
 
     decadal_df,
 
+    "decade",
+
     "avg_temperature",
 
     "Temperature Evolution"
@@ -166,6 +168,8 @@ render_trend_chart(
 render_trend_chart(
 
     decadal_df,
+
+    "decade",
 
     "rainfall",
 
