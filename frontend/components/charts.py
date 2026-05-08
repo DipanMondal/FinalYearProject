@@ -310,3 +310,78 @@ def render_volatility_chart(
 
         use_container_width=True
     )
+    
+    
+    
+def render_forecast_chart(
+
+    historical_df,
+
+    forecast_df,
+
+    value_column,
+
+    forecast_column,
+
+    title,
+
+    y_label
+):
+
+    fig = go.Figure()
+
+    # -----------------------------------
+    # Historical
+    # -----------------------------------
+
+    fig.add_trace(
+
+        go.Scatter(
+
+            x=historical_df["date"],
+
+            y=historical_df[value_column],
+
+            mode="lines",
+
+            name="Historical"
+        )
+    )
+
+    # -----------------------------------
+    # Forecast
+    # -----------------------------------
+
+    fig.add_trace(
+
+        go.Scatter(
+
+            x=forecast_df["date"],
+
+            y=forecast_df[forecast_column],
+
+            mode="lines",
+
+            name="Forecast"
+        )
+    )
+
+    fig.update_layout(
+
+        title=title,
+
+        xaxis_title="Date",
+
+        yaxis_title=y_label,
+
+        height=550,
+
+        hovermode="x unified"
+    )
+
+    st.plotly_chart(
+
+        fig,
+
+        use_container_width=True
+    )

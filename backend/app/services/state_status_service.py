@@ -35,3 +35,37 @@ def create_or_update_state_status(
         db.add(status)
 
     db.commit()
+    
+    
+def update_trained_status(
+    db: Session,
+    state: str,
+    value: bool
+):
+    existing = (
+        db.query(StateStatus)
+        .filter(StateStatus.state == state)
+        .first()
+    )
+    
+    if existing:
+        existing.trained = value
+        
+    db.commit()
+    
+    
+def update_analysed_status(
+    db: Session,
+    state: str,
+    value: bool
+):
+    existing = (
+        db.query(StateStatus)
+        .filter(StateStatus.state == state)
+        .first()
+    )
+    
+    if existing:
+        existing.analysed = value
+        
+    db.commit()

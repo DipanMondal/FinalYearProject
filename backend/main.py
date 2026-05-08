@@ -12,6 +12,8 @@ from app.api.routes.training import router as training_router
 from app.api.routes.forecast import router as forecast_router
 from app.api.routes.analysis import router as analysis_router
 from app.api.routes.report import router as report_router
+from app.api.routes.climate_data import router as climate_data_router
+from app.api.routes.state_management import router as state_management_router
 
 
 
@@ -48,6 +50,8 @@ app.include_router(training_router)
 app.include_router(forecast_router)
 app.include_router(analysis_router)
 app.include_router(report_router)
+app.include_router(climate_data_router)
+app.include_router(state_management_router)
 
 
 @app.get("/")

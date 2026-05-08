@@ -100,3 +100,45 @@ def get_analysis_report(
     )
 
     return response.json()
+    
+    
+def get_historical_data(
+    state
+):
+
+    response = requests.get(
+
+        f"{BASE_URL}/historical/{state}"
+    )
+
+    return response.json()
+    
+    
+def delete_state_data(state):
+
+    response = requests.delete(
+
+        f"{BASE_URL}/state/{state}"
+    )
+
+    return response.json()
+
+
+def delete_models(state):
+
+    response = requests.delete(
+
+        f"{BASE_URL}/models/{state}"
+    )
+
+    return response.json()
+
+
+def delete_analysis(state):
+
+    response = requests.delete(
+
+        f"{BASE_URL}/analysis/{state}"
+    )
+
+    return response.json()
