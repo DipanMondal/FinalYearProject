@@ -15,6 +15,11 @@ from components.charts import (
     render_seasonal_signature_chart
 )
 
+from components.alert_box import (
+    render_alert_box
+)
+
+
 render_sidebar()
 
 st.title(
@@ -36,153 +41,159 @@ available_states = [
     if s["analysed"]
 ]
 
-selected_state = st.selectbox(
+if len(available_states)!=0:
 
-    "Select State",
+    selected_state = st.selectbox(
 
-    available_states
-)
+        "Select State",
 
-# -----------------------------------
-# LOAD REPORT
-# -----------------------------------
+        available_states
+    )
 
-report = get_analysis_report(
-    selected_state
-)
+    # -----------------------------------
+    # LOAD REPORT
+    # -----------------------------------
 
-seasonal_signature = (
-    report["seasonal_signature"]
-)
+    report = get_analysis_report(
+        selected_state
+    )
 
-months = seasonal_signature["months"]
+    seasonal_signature = (
+        report["seasonal_signature"]
+    )
 
-temperature_data = (
-    seasonal_signature["temperature"]
-)
+    months = seasonal_signature["months"]
 
-rainfall_data = (
-    seasonal_signature["rainfall"]
-)
+    temperature_data = (
+        seasonal_signature["temperature"]
+    )
 
-temperature_climatology = (
-    seasonal_signature[
-        "temperature_climatology"
-    ]
-)
+    rainfall_data = (
+        seasonal_signature["rainfall"]
+    )
 
-rainfall_climatology = (
-    seasonal_signature[
-        "rainfall_climatology"
-    ]
-)
+    temperature_climatology = (
+        seasonal_signature[
+            "temperature_climatology"
+        ]
+    )
 
-# -----------------------------------
-# YEAR SELECTION
-# -----------------------------------
+    rainfall_climatology = (
+        seasonal_signature[
+            "rainfall_climatology"
+        ]
+    )
 
-available_years = sorted(
-    temperature_data.keys()
-)
+    # -----------------------------------
+    # YEAR SELECTION
+    # -----------------------------------
 
-default_years = (
-    available_years[-5:]
-    if len(available_years) >= 5
-    else available_years
-)
+    available_years = sorted(
+        temperature_data.keys()
+    )
 
-selected_years = st.multiselect(
+    default_years = (
+        available_years[-5:]
+        if len(available_years) >= 5
+        else available_years
+    )
 
-    "Select Years",
+    selected_years = st.multiselect(
 
-    options=available_years,
+        "Select Years",
 
-    default=default_years
-)
+        options=available_years,
 
-st.markdown("---")
+        default=default_years
+    )
 
-# -----------------------------------
-# TEMPERATURE SIGNATURE
-# -----------------------------------
+    st.markdown("---")
 
-st.subheader(
-    "🌡️ Temperature Seasonal Signature"
-)
+    # -----------------------------------
+    # TEMPERATURE SIGNATURE
+    # -----------------------------------
 
-render_seasonal_signature_chart(
+    st.subheader(
+        "🌡️ Temperature Seasonal Signature"
+    )
 
-    seasonal_data=temperature_data,
+    render_seasonal_signature_chart(
 
-    climatology=
-        temperature_climatology,
+        seasonal_data=temperature_data,
 
-    months=months,
+        climatology=
+            temperature_climatology,
 
-    title=(
-        "Multi-Year Temperature "
-        "Seasonal Signature"
-    ),
+        months=months,
 
-    y_label="Temperature (°C)",
+        title=(
+            "Multi-Year Temperature "
+            "Seasonal Signature"
+        ),
 
-    selected_years=selected_years
-)
+        y_label="Temperature (°C)",
 
-st.markdown("---")
+        selected_years=selected_years
+    )
 
-# -----------------------------------
-# RAINFALL SIGNATURE
-# -----------------------------------
+    st.markdown("---")
 
-st.subheader(
-    "🌧️ Rainfall Seasonal Signature"
-)
+    # -----------------------------------
+    # RAINFALL SIGNATURE
+    # -----------------------------------
 
-render_seasonal_signature_chart(
+    st.subheader(
+        "🌧️ Rainfall Seasonal Signature"
+    )
 
-    seasonal_data=rainfall_data,
+    render_seasonal_signature_chart(
 
-    climatology=
-        rainfall_climatology,
+        seasonal_data=rainfall_data,
 
-    months=months,
+        climatology=
+            rainfall_climatology,
 
-    title=(
-        "Multi-Year Rainfall "
-        "Seasonal Signature"
-    ),
+        months=months,
 
-    y_label="Rainfall",
+        title=(
+            "Multi-Year Rainfall "
+            "Seasonal Signature"
+        ),
 
-    selected_years=selected_years
-)
+        y_label="Rainfall",
 
-st.markdown("---")
+        selected_years=selected_years
+    )
 
-# -----------------------------------
-# SCIENTIFIC INSIGHTS
-# -----------------------------------
+    st.markdown("---")
 
-st.subheader(
-    "🧠 Seasonal Climate Insights"
-)
+    # -----------------------------------
+    # SCIENTIFIC INSIGHTS
+    # -----------------------------------
 
-st.info(
-    """
-    These seasonal signature plots
-    compare month-wise climate
-    behavior across multiple years.
+    st.subheader(
+        "🧠 Seasonal Climate Insights"
+    )
 
-    The thick climatology line
-    represents the long-term
-    monthly average pattern.
+    st.info(
+        """
+        These seasonal signature plots
+        compare month-wise climate
+        behavior across multiple years.
 
-    Deviations from climatology
-    indicate:
-    - warming/cooling shifts,
-    - monsoon variability,
-    - seasonal instability,
-    - changing climate regimes.
-    """
-)
+        The thick climatology line
+        represents the long-term
+        monthly average pattern.
+
+        Deviations from climatology
+        indicate:
+        - warming/cooling shifts,
+        - monsoon variability,
+        - seasonal instability,
+        - changing climate regimes.
+        """
+    )
+    
+else:
+    st.markdown("---")
+    render_alert_box(message = "No state has been analyzed yet!") 

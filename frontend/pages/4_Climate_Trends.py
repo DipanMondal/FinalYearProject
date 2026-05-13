@@ -20,6 +20,11 @@ from components.charts import (
     render_decadal_bar_chart
 )
 
+from components.alert_box import (
+    render_alert_box
+)
+
+
 render_sidebar()
 
 st.title(
@@ -41,271 +46,277 @@ available_states = [
     if s["analysed"]
 ]
 
-selected_state = st.selectbox(
+if len(available_states)!=0:
 
-    "Select State",
+    selected_state = st.selectbox(
 
-    available_states
-)
+        "Select State",
 
-# -----------------------------------
-# LOAD REPORT
-# -----------------------------------
-
-report = get_analysis_report(
-    selected_state
-)
-
-trend_analysis = (
-    report["trend_analysis"]
-)
-
-decadal_analysis = (
-    report["decadal_analysis"]
-)
-
-decadal_df = pd.DataFrame(
-    decadal_analysis
-)
-
-# -----------------------------------
-# KPI SECTION
-# -----------------------------------
-
-st.subheader(
-    "🌍 Climate Change Indicators"
-)
-
-temp_trend = (
-    trend_analysis["temperature"]
-)
-
-rainfall_trend = (
-    trend_analysis["rainfall"]
-)
-
-humidity_trend = (
-    trend_analysis["humidity"]
-)
-
-col1, col2, col3 = st.columns(3)
-
-col1.metric(
-
-    "Warming Rate",
-
-    (
-        f"{temp_trend['trend_per_decade']:.2f}"
-        " °C / decade"
+        available_states
     )
-)
 
-col2.metric(
+    # -----------------------------------
+    # LOAD REPORT
+    # -----------------------------------
 
-    "Rainfall Trend",
-
-    (
-        f"{rainfall_trend['trend_per_decade']:.2f}"
+    report = get_analysis_report(
+        selected_state
     )
-)
 
-col3.metric(
-
-    "Humidity Trend",
-
-    (
-        f"{humidity_trend['trend_per_decade']:.2f}"
+    trend_analysis = (
+        report["trend_analysis"]
     )
-)
 
-st.markdown("---")
+    decadal_analysis = (
+        report["decadal_analysis"]
+    )
 
-# -----------------------------------
-# STATISTICAL METRICS
-# -----------------------------------
+    decadal_df = pd.DataFrame(
+        decadal_analysis
+    )
 
-st.subheader(
-    "📊 Statistical Significance"
-)
+    # -----------------------------------
+    # KPI SECTION
+    # -----------------------------------
 
-stats_df = pd.DataFrame({
+    st.subheader(
+        "🌍 Climate Change Indicators"
+    )
 
-    "Metric": [
+    temp_trend = (
+        trend_analysis["temperature"]
+    )
 
-        "Temperature R²",
-        "Rainfall R²",
-        "Humidity R²",
+    rainfall_trend = (
+        trend_analysis["rainfall"]
+    )
 
-        "Temperature p-value",
-        "Rainfall p-value",
-        "Humidity p-value"
-    ],
+    humidity_trend = (
+        trend_analysis["humidity"]
+    )
 
-    "Value": [
+    col1, col2, col3 = st.columns(3)
 
-        temp_trend["r_squared"],
-        rainfall_trend["r_squared"],
-        humidity_trend["r_squared"],
+    col1.metric(
 
-        temp_trend["p_value"],
-        rainfall_trend["p_value"],
-        humidity_trend["p_value"]
-    ]
-})
+        "Warming Rate",
 
-st.dataframe(stats_df)
+        (
+            f"{temp_trend['trend_per_decade']:.2f}"
+            " °C / decade"
+        )
+    )
 
-st.markdown("---")
+    col2.metric(
 
-# -----------------------------------
-# TEMPERATURE EVOLUTION
-# -----------------------------------
+        "Rainfall Trend",
 
-st.subheader(
-    "🔥 Temperature Evolution"
-)
+        (
+            f"{rainfall_trend['trend_per_decade']:.2f}"
+        )
+    )
 
-render_trend_chart(
+    col3.metric(
 
-    decadal_df,
+        "Humidity Trend",
 
-    "decade",
+        (
+            f"{humidity_trend['trend_per_decade']:.2f}"
+        )
+    )
 
-    "avg_temperature",
+    st.markdown("---")
 
-    "Decadal Temperature Change"
-)
+    # -----------------------------------
+    # STATISTICAL METRICS
+    # -----------------------------------
 
-render_decadal_bar_chart(
+    st.subheader(
+        "📊 Statistical Significance"
+    )
 
-    decadal_df,
+    stats_df = pd.DataFrame({
 
-    "decade",
+        "Metric": [
 
-    "avg_temperature",
+            "Temperature R²",
+            "Rainfall R²",
+            "Humidity R²",
 
-    "Average Temperature by Decade",
+            "Temperature p-value",
+            "Rainfall p-value",
+            "Humidity p-value"
+        ],
 
-    "Temperature (°C)"
-)
+        "Value": [
 
-st.markdown("---")
+            temp_trend["r_squared"],
+            rainfall_trend["r_squared"],
+            humidity_trend["r_squared"],
 
-# -----------------------------------
-# RAINFALL EVOLUTION
-# -----------------------------------
+            temp_trend["p_value"],
+            rainfall_trend["p_value"],
+            humidity_trend["p_value"]
+        ]
+    })
 
-st.subheader(
-    "🌧️ Rainfall Evolution"
-)
+    st.dataframe(stats_df)
 
-render_trend_chart(
+    st.markdown("---")
 
-    decadal_df,
+    # -----------------------------------
+    # TEMPERATURE EVOLUTION
+    # -----------------------------------
 
-    "decade",
+    st.subheader(
+        "🔥 Temperature Evolution"
+    )
 
-    "rainfall",
+    render_trend_chart(
 
-    "Decadal Rainfall Change"
-)
+        decadal_df,
 
-render_decadal_bar_chart(
+        "decade",
 
-    decadal_df,
+        "avg_temperature",
 
-    "decade",
+        "Decadal Temperature Change"
+    )
 
-    "rainfall",
+    render_decadal_bar_chart(
 
-    "Average Rainfall by Decade",
+        decadal_df,
 
-    "Rainfall"
-)
+        "decade",
 
-st.markdown("---")
+        "avg_temperature",
 
-# -----------------------------------
-# HUMIDITY EVOLUTION
-# -----------------------------------
+        "Average Temperature by Decade",
 
-st.subheader(
-    "💧 Humidity Evolution"
-)
+        "Temperature (°C)"
+    )
 
-render_trend_chart(
+    st.markdown("---")
 
-    decadal_df,
+    # -----------------------------------
+    # RAINFALL EVOLUTION
+    # -----------------------------------
 
-    "decade",
+    st.subheader(
+        "🌧️ Rainfall Evolution"
+    )
 
-    "humidity",
+    render_trend_chart(
 
-    "Decadal Humidity Change"
-)
+        decadal_df,
 
-render_decadal_bar_chart(
+        "decade",
 
-    decadal_df,
+        "rainfall",
 
-    "decade",
+        "Decadal Rainfall Change"
+    )
 
-    "humidity",
+    render_decadal_bar_chart(
 
-    "Average Humidity by Decade",
+        decadal_df,
 
-    "Humidity"
-)
+        "decade",
 
-st.markdown("---")
+        "rainfall",
 
-# -----------------------------------
-# SCIENTIFIC INTERPRETATION
-# -----------------------------------
+        "Average Rainfall by Decade",
 
-st.subheader(
-    "🧠 Climate Interpretation"
-)
+        "Rainfall"
+    )
 
-warming_direction = (
+    st.markdown("---")
 
-    "warming"
+    # -----------------------------------
+    # HUMIDITY EVOLUTION
+    # -----------------------------------
 
-    if temp_trend[
-        "trend_per_decade"
-    ] > 0
+    st.subheader(
+        "💧 Humidity Evolution"
+    )
 
-    else "cooling"
-)
+    render_trend_chart(
 
-significance = (
+        decadal_df,
 
-    "statistically significant"
+        "decade",
 
-    if temp_trend["p_value"] < 0.05
+        "humidity",
 
-    else "weakly significant"
-)
+        "Decadal Humidity Change"
+    )
 
-st.info(
+    render_decadal_bar_chart(
 
-    f"""
-    {selected_state} demonstrates a
-    long-term {warming_direction}
-    climate trend.
+        decadal_df,
 
-    The estimated temperature
-    change is
-    {temp_trend['trend_per_decade']:.2f}
-    °C per decade.
+        "decade",
 
-    The observed trend appears
-    {significance}
-    with an R² value of
-    {temp_trend['r_squared']:.3f}.
+        "humidity",
 
-    Rainfall and humidity trends
-    indicate evolving seasonal
-    climate dynamics over time.
-    """
-)
+        "Average Humidity by Decade",
+
+        "Humidity"
+    )
+
+    st.markdown("---")
+
+    # -----------------------------------
+    # SCIENTIFIC INTERPRETATION
+    # -----------------------------------
+
+    st.subheader(
+        "🧠 Climate Interpretation"
+    )
+
+    warming_direction = (
+
+        "warming"
+
+        if temp_trend[
+            "trend_per_decade"
+        ] > 0
+
+        else "cooling"
+    )
+
+    significance = (
+
+        "statistically significant"
+
+        if temp_trend["p_value"] < 0.05
+
+        else "weakly significant"
+    )
+
+    st.info(
+
+        f"""
+        {selected_state} demonstrates a
+        long-term {warming_direction}
+        climate trend.
+
+        The estimated temperature
+        change is
+        {temp_trend['trend_per_decade']:.2f}
+        °C per decade.
+
+        The observed trend appears
+        {significance}
+        with an R² value of
+        {temp_trend['r_squared']:.3f}.
+
+        Rainfall and humidity trends
+        indicate evolving seasonal
+        climate dynamics over time.
+        """
+    )
+    
+else:
+    st.markdown("---")
+    render_alert_box(message = "No state is analysed yet!")

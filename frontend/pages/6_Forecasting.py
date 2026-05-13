@@ -19,6 +19,11 @@ from components.charts import (
     render_forecast_chart
 )
 
+from components.alert_box import (
+    render_alert_box
+)
+
+
 render_sidebar()
 
 st.title(
@@ -40,295 +45,301 @@ available_states = [
     if s["trained"]
 ]
 
-selected_state = st.selectbox(
+if len(available_states)!=0:
 
-    "Select State",
+    selected_state = st.selectbox(
 
-    available_states
-)
+        "Select State",
 
-# -----------------------------------
-# FORECAST HORIZON
-# -----------------------------------
-
-forecast_horizon = st.slider(
-
-    "Forecast Horizon (Months)",
-
-    min_value=1,
-
-    max_value=60,
-
-    value=12
-)
-
-# -----------------------------------
-# LOAD DATA
-# -----------------------------------
-
-historical_data = (
-    get_historical_data(
-        selected_state
+        available_states
     )
-)
 
-forecast_data = get_forecast(
+    # -----------------------------------
+    # FORECAST HORIZON
+    # -----------------------------------
 
-    selected_state,
+    forecast_horizon = st.slider(
 
-    forecast_horizon
-)
+        "Forecast Horizon (Months)",
 
-historical_df = pd.DataFrame(
-    historical_data
-)
+        min_value=1,
 
-# -----------------------------------
-# CREATE HISTORICAL DATES
-# -----------------------------------
+        max_value=60,
 
-historical_df["date"] = pd.to_datetime({
+        value=12
+    )
 
-    "year": historical_df["year"],
+    # -----------------------------------
+    # LOAD DATA
+    # -----------------------------------
 
-    "month": historical_df["month"],
+    historical_data = (
+        get_historical_data(
+            selected_state
+        )
+    )
 
-    "day": 1
-})
+    forecast_data = get_forecast(
 
-# -----------------------------------
-# TEMPERATURE FORECAST
-# -----------------------------------
+        selected_state,
 
-temperature_forecast = pd.DataFrame(
+        forecast_horizon
+    )
 
-    forecast_data["data"]
-    ["avg_temperature"]
-)
+    historical_df = pd.DataFrame(
+        historical_data
+    )
 
-temperature_forecast["date"] = (
-    pd.to_datetime({
+    # -----------------------------------
+    # CREATE HISTORICAL DATES
+    # -----------------------------------
 
-        "year":
-            temperature_forecast[
-                "year"
-            ],
+    historical_df["date"] = pd.to_datetime({
 
-        "month":
-            temperature_forecast[
-                "month"
-            ],
+        "year": historical_df["year"],
+
+        "month": historical_df["month"],
 
         "day": 1
     })
-)
 
-# -----------------------------------
-# RAINFALL FORECAST
-# -----------------------------------
+    # -----------------------------------
+    # TEMPERATURE FORECAST
+    # -----------------------------------
 
-rainfall_forecast = pd.DataFrame(
+    temperature_forecast = pd.DataFrame(
+
+        forecast_data["data"]
+        ["avg_temperature"]
+    )
 
-    forecast_data["data"]
-    ["rainfall"]
-)
+    temperature_forecast["date"] = (
+        pd.to_datetime({
 
-rainfall_forecast["date"] = (
-    pd.to_datetime({
+            "year":
+                temperature_forecast[
+                    "year"
+                ],
 
-        "year":
-            rainfall_forecast[
-                "year"
-            ],
+            "month":
+                temperature_forecast[
+                    "month"
+                ],
 
-        "month":
-            rainfall_forecast[
-                "month"
-            ],
+            "day": 1
+        })
+    )
 
-        "day": 1
-    })
-)
+    # -----------------------------------
+    # RAINFALL FORECAST
+    # -----------------------------------
 
-# -----------------------------------
-# HUMIDITY FORECAST
-# -----------------------------------
+    rainfall_forecast = pd.DataFrame(
 
-humidity_forecast = pd.DataFrame(
+        forecast_data["data"]
+        ["rainfall"]
+    )
 
-    forecast_data["data"]
-    ["humidity"]
-)
+    rainfall_forecast["date"] = (
+        pd.to_datetime({
 
-humidity_forecast["date"] = (
-    pd.to_datetime({
+            "year":
+                rainfall_forecast[
+                    "year"
+                ],
 
-        "year":
-            humidity_forecast[
-                "year"
-            ],
+            "month":
+                rainfall_forecast[
+                    "month"
+                ],
 
-        "month":
-            humidity_forecast[
-                "month"
-            ],
+            "day": 1
+        })
+    )
 
-        "day": 1
-    })
-)
+    # -----------------------------------
+    # HUMIDITY FORECAST
+    # -----------------------------------
 
-# -----------------------------------
-# FORECAST SUMMARY
-# -----------------------------------
+    humidity_forecast = pd.DataFrame(
 
-st.subheader(
-    "📊 Forecast Summary"
-)
+        forecast_data["data"]
+        ["humidity"]
+    )
 
-latest_temp = (
-    temperature_forecast[
-        "prediction"
-    ].iloc[-1]
-)
+    humidity_forecast["date"] = (
+        pd.to_datetime({
 
-latest_rainfall = (
-    rainfall_forecast[
-        "prediction"
-    ].iloc[-1]
-)
+            "year":
+                humidity_forecast[
+                    "year"
+                ],
 
-latest_humidity = (
-    humidity_forecast[
-        "prediction"
-    ].iloc[-1]
-)
+            "month":
+                humidity_forecast[
+                    "month"
+                ],
 
-col1, col2, col3 = st.columns(3)
+            "day": 1
+        })
+    )
 
-col1.metric(
+    # -----------------------------------
+    # FORECAST SUMMARY
+    # -----------------------------------
 
-    "Projected Temperature",
+    st.subheader(
+        "📊 Forecast Summary"
+    )
 
-    f"{latest_temp:.2f} °C"
-)
+    latest_temp = (
+        temperature_forecast[
+            "prediction"
+        ].iloc[-1]
+    )
 
-col2.metric(
+    latest_rainfall = (
+        rainfall_forecast[
+            "prediction"
+        ].iloc[-1]
+    )
 
-    "Projected Rainfall",
+    latest_humidity = (
+        humidity_forecast[
+            "prediction"
+        ].iloc[-1]
+    )
 
-    f"{latest_rainfall:.2f}"
-)
+    col1, col2, col3 = st.columns(3)
 
-col3.metric(
+    col1.metric(
 
-    "Projected Humidity",
+        "Projected Temperature",
 
-    f"{latest_humidity:.2f}"
-)
+        f"{latest_temp:.2f} °C"
+    )
 
-st.markdown("---")
+    col2.metric(
 
-# -----------------------------------
-# TEMPERATURE FORECAST
-# -----------------------------------
+        "Projected Rainfall",
 
-st.subheader(
-    "🌡️ Temperature Forecast"
-)
+        f"{latest_rainfall:.2f}"
+    )
 
-render_forecast_chart(
+    col3.metric(
 
-    historical_df,
+        "Projected Humidity",
 
-    temperature_forecast,
+        f"{latest_humidity:.2f}"
+    )
 
-    "avg_temperature",
+    st.markdown("---")
 
-    "prediction",
+    # -----------------------------------
+    # TEMPERATURE FORECAST
+    # -----------------------------------
 
-    "Temperature Projection",
+    st.subheader(
+        "🌡️ Temperature Forecast"
+    )
 
-    "Temperature (°C)"
-)
+    render_forecast_chart(
 
-st.markdown("---")
+        historical_df,
 
-# -----------------------------------
-# RAINFALL FORECAST
-# -----------------------------------
+        temperature_forecast,
 
-st.subheader(
-    "🌧️ Rainfall Forecast"
-)
+        "avg_temperature",
 
-render_forecast_chart(
+        "prediction",
 
-    historical_df,
+        "Temperature Projection",
 
-    rainfall_forecast,
+        "Temperature (°C)"
+    )
 
-    "rainfall",
+    st.markdown("---")
 
-    "prediction",
+    # -----------------------------------
+    # RAINFALL FORECAST
+    # -----------------------------------
 
-    "Rainfall Projection",
+    st.subheader(
+        "🌧️ Rainfall Forecast"
+    )
 
-    "Rainfall"
-)
+    render_forecast_chart(
 
-st.markdown("---")
+        historical_df,
 
-# -----------------------------------
-# HUMIDITY FORECAST
-# -----------------------------------
+        rainfall_forecast,
 
-st.subheader(
-    "💧 Humidity Forecast"
-)
+        "rainfall",
 
-render_forecast_chart(
+        "prediction",
 
-    historical_df,
+        "Rainfall Projection",
 
-    humidity_forecast,
+        "Rainfall"
+    )
 
-    "humidity",
+    st.markdown("---")
 
-    "prediction",
+    # -----------------------------------
+    # HUMIDITY FORECAST
+    # -----------------------------------
 
-    "Humidity Projection",
+    st.subheader(
+        "💧 Humidity Forecast"
+    )
 
-    "Humidity"
-)
+    render_forecast_chart(
 
-st.markdown("---")
+        historical_df,
 
-# -----------------------------------
-# CLIMATE OUTLOOK
-# -----------------------------------
+        humidity_forecast,
 
-st.subheader(
-    "🧠 Climate Outlook"
-)
+        "humidity",
 
-st.info(
+        "prediction",
 
-    f"""
-    Forecast projections for
-    {selected_state} suggest:
+        "Humidity Projection",
 
-    - Future temperature:
-      {latest_temp:.2f} °C
+        "Humidity"
+    )
 
-    - Future rainfall:
-      {latest_rainfall:.2f}
+    st.markdown("---")
 
-    - Future humidity:
-      {latest_humidity:.2f}
+    # -----------------------------------
+    # CLIMATE OUTLOOK
+    # -----------------------------------
 
-    Recursive forecasting models
-    indicate continuing climate
-    evolution over the selected
-    forecast horizon.
-    """
-)
+    st.subheader(
+        "🧠 Climate Outlook"
+    )
+
+    st.info(
+
+        f"""
+        Forecast projections for
+        {selected_state} suggest:
+
+        - Future temperature:
+          {latest_temp:.2f} °C
+
+        - Future rainfall:
+          {latest_rainfall:.2f}
+
+        - Future humidity:
+          {latest_humidity:.2f}
+
+        Recursive forecasting models
+        indicate continuing climate
+        evolution over the selected
+        forecast horizon.
+        """
+    )
+    
+else:
+    st.markdown("---")
+    render_alert_box(message = "No trained model available right now!")

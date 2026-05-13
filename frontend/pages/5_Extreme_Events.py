@@ -18,6 +18,11 @@ from components.charts import (
     render_volatility_chart
 )
 
+from components.alert_box import (
+    render_alert_box
+)
+
+
 render_sidebar()
 
 st.title(
@@ -39,230 +44,236 @@ available_states = [
     if s["analysed"]
 ]
 
-selected_state = st.selectbox(
+if len(available_states)!=0:
 
-    "Select State",
+    selected_state = st.selectbox(
 
-    available_states
-)
+        "Select State",
 
-# -----------------------------------
-# LOAD REPORT
-# -----------------------------------
+        available_states
+    )
 
-report = get_analysis_report(
-    selected_state
-)
+    # -----------------------------------
+    # LOAD REPORT
+    # -----------------------------------
 
-extreme_events = (
-    report["extreme_events"]
-)
+    report = get_analysis_report(
+        selected_state
+    )
 
-volatility_analysis = (
-    report["volatility_analysis"]
-)
+    extreme_events = (
+        report["extreme_events"]
+    )
 
-anomaly_frequency = (
-    report["anomaly_frequency"]
-)
+    volatility_analysis = (
+        report["volatility_analysis"]
+    )
 
-# -----------------------------------
-# KPI SECTION
-# -----------------------------------
+    anomaly_frequency = (
+        report["anomaly_frequency"]
+    )
 
-st.subheader(
-    "🚨 Climate Risk Indicators"
-)
+    # -----------------------------------
+    # KPI SECTION
+    # -----------------------------------
 
-heatwave_count = (
+    st.subheader(
+        "🚨 Climate Risk Indicators"
+    )
 
-    extreme_events["heatwaves"]
+    heatwave_count = (
 
-    ["event_count"]
-)
+        extreme_events["heatwaves"]
 
-rainfall_count = (
+        ["event_count"]
+    )
 
-    extreme_events[
-        "extreme_rainfall"
-    ]
+    rainfall_count = (
 
-    ["event_count"]
-)
+        extreme_events[
+            "extreme_rainfall"
+        ]
 
-humidity_count = (
+        ["event_count"]
+    )
 
-    extreme_events[
-        "high_humidity"
-    ]
+    humidity_count = (
 
-    ["event_count"]
-)
+        extreme_events[
+            "high_humidity"
+        ]
 
-risk_score = (
-    heatwave_count
-    + rainfall_count
-    + humidity_count
-)
+        ["event_count"]
+    )
 
-col1, col2, col3, col4 = (
-    st.columns(4)
-)
+    risk_score = (
+        heatwave_count
+        + rainfall_count
+        + humidity_count
+    )
 
-col1.metric(
-    "Heatwaves",
-    heatwave_count
-)
+    col1, col2, col3, col4 = (
+        st.columns(4)
+    )
 
-col2.metric(
-    "Extreme Rainfall",
-    rainfall_count
-)
+    col1.metric(
+        "Heatwaves",
+        heatwave_count
+    )
 
-col3.metric(
-    "Humidity Extremes",
-    humidity_count
-)
+    col2.metric(
+        "Extreme Rainfall",
+        rainfall_count
+    )
 
-col4.metric(
-    "Climate Risk Score",
-    risk_score
-)
+    col3.metric(
+        "Humidity Extremes",
+        humidity_count
+    )
 
-st.markdown("---")
+    col4.metric(
+        "Climate Risk Score",
+        risk_score
+    )
 
-# -----------------------------------
-# HEATWAVE TIMELINE
-# -----------------------------------
+    st.markdown("---")
 
-st.subheader(
-    "🔥 Heatwave Timeline"
-)
+    # -----------------------------------
+    # HEATWAVE TIMELINE
+    # -----------------------------------
 
-render_event_timeline(
+    st.subheader(
+        "🔥 Heatwave Timeline"
+    )
 
-    extreme_events[
-        "heatwaves"
-    ]["events"],
+    render_event_timeline(
 
-    "temperature",
+        extreme_events[
+            "heatwaves"
+        ]["events"],
 
-    "Heatwave Events",
+        "temperature",
 
-    "Temperature (°C)"
-)
+        "Heatwave Events",
 
-st.markdown("---")
+        "Temperature (°C)"
+    )
 
-# -----------------------------------
-# EXTREME RAINFALL TIMELINE
-# -----------------------------------
+    st.markdown("---")
 
-st.subheader(
-    "🌧️ Extreme Rainfall Timeline"
-)
+    # -----------------------------------
+    # EXTREME RAINFALL TIMELINE
+    # -----------------------------------
 
-render_event_timeline(
+    st.subheader(
+        "🌧️ Extreme Rainfall Timeline"
+    )
 
-    extreme_events[
-        "extreme_rainfall"
-    ]["events"],
+    render_event_timeline(
 
-    "rainfall",
+        extreme_events[
+            "extreme_rainfall"
+        ]["events"],
 
-    "Extreme Rainfall Events",
+        "rainfall",
 
-    "Rainfall"
-)
+        "Extreme Rainfall Events",
 
-st.markdown("---")
+        "Rainfall"
+    )
 
-# -----------------------------------
-# HUMIDITY EVENTS
-# -----------------------------------
+    st.markdown("---")
 
-st.subheader(
-    "💧 High Humidity Events"
-)
+    # -----------------------------------
+    # HUMIDITY EVENTS
+    # -----------------------------------
 
-render_event_timeline(
+    st.subheader(
+        "💧 High Humidity Events"
+    )
 
-    extreme_events[
-        "high_humidity"
-    ]["events"],
+    render_event_timeline(
 
-    "humidity",
+        extreme_events[
+            "high_humidity"
+        ]["events"],
 
-    "High Humidity Events",
+        "humidity",
 
-    "Humidity"
-)
+        "High Humidity Events",
 
-st.markdown("---")
+        "Humidity"
+    )
 
-# -----------------------------------
-# VOLATILITY ANALYSIS
-# -----------------------------------
+    st.markdown("---")
 
-st.subheader(
-    "📊 Climate Volatility"
-)
+    # -----------------------------------
+    # VOLATILITY ANALYSIS
+    # -----------------------------------
 
-render_volatility_chart(
-    volatility_analysis
-)
+    st.subheader(
+        "📊 Climate Volatility"
+    )
 
-st.markdown("---")
+    render_volatility_chart(
+        volatility_analysis
+    )
 
-# -----------------------------------
-# ANOMALY FREQUENCY
-# -----------------------------------
+    st.markdown("---")
 
-st.subheader(
-    "📈 Anomaly Frequency"
-)
+    # -----------------------------------
+    # ANOMALY FREQUENCY
+    # -----------------------------------
 
-st.json(anomaly_frequency)
+    st.subheader(
+        "📈 Anomaly Frequency"
+    )
 
-st.markdown("---")
+    st.json(anomaly_frequency)
 
-# -----------------------------------
-# RISK INTERPRETATION
-# -----------------------------------
+    st.markdown("---")
 
-st.subheader(
-    "🧠 Climate Risk Interpretation"
-)
+    # -----------------------------------
+    # RISK INTERPRETATION
+    # -----------------------------------
 
-risk_level = (
+    st.subheader(
+        "🧠 Climate Risk Interpretation"
+    )
 
-    "HIGH"
+    risk_level = (
 
-    if risk_score > 50
+        "HIGH"
 
-    else "MODERATE"
+        if risk_score > 50
 
-    if risk_score > 20
+        else "MODERATE"
 
-    else "LOW"
-)
+        if risk_score > 20
 
-st.error(
+        else "LOW"
+    )
 
-    f"""
-    Climate Risk Level:
-    {risk_level}
+    st.error(
 
-    {selected_state} has experienced
-    {heatwave_count} heatwave events,
-    {rainfall_count} extreme rainfall
-    events, and
-    {humidity_count} high humidity
-    anomalies.
+        f"""
+        Climate Risk Level:
+        {risk_level}
 
-    Elevated climate volatility and
-    anomaly frequency suggest
-    increasing environmental
-    instability.
-    """
-)
+        {selected_state} has experienced
+        {heatwave_count} heatwave events,
+        {rainfall_count} extreme rainfall
+        events, and
+        {humidity_count} high humidity
+        anomalies.
+
+        Elevated climate volatility and
+        anomaly frequency suggest
+        increasing environmental
+        instability.
+        """
+    )
+    
+else:
+    st.markdown("---")
+    render_alert_box(message = "No state is analysed yet!")

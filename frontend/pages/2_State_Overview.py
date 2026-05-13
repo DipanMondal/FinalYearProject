@@ -22,6 +22,11 @@ from components.charts import (
     render_trend_chart
 )
 
+from components.alert_box import (
+    render_alert_box
+)
+
+
 render_sidebar()
 
 st.title(
@@ -43,204 +48,211 @@ available_states = [
     if s["analysed"]
 ]
 
-selected_state = st.selectbox(
 
-    "Select State",
+if len(available_states)!=0:
 
-    available_states
-)
+    selected_state = st.selectbox(
 
-# -----------------------------------
-# LOAD REPORT
-# -----------------------------------
+        "Select State",
 
-report = get_analysis_report(
-    selected_state
-)
+        available_states
+    )
 
-# -----------------------------------
-# KPI CARDS
-# -----------------------------------
+    # -----------------------------------
+    # LOAD REPORT
+    # -----------------------------------
 
-st.subheader(
-    "🌡️ Climate KPIs"
-)
+    report = get_analysis_report(
+        selected_state
+    )
 
-temperature_trend = (
+    # -----------------------------------
+    # KPI CARDS
+    # -----------------------------------
 
-    report["trend_analysis"]
+    st.subheader(
+        "🌡️ Climate KPIs"
+    )
 
-    ["temperature"]
+    temperature_trend = (
 
-    ["trend_per_decade"]
-)
+        report["trend_analysis"]
 
-rainfall_trend = (
+        ["temperature"]
 
-    report["trend_analysis"]
+        ["trend_per_decade"]
+    )
 
-    ["rainfall"]
+    rainfall_trend = (
 
-    ["trend_per_decade"]
-)
+        report["trend_analysis"]
 
-heatwaves = (
+        ["rainfall"]
 
-    report["extreme_events"]
+        ["trend_per_decade"]
+    )
 
-    ["heatwaves"]
+    heatwaves = (
 
-    ["event_count"]
-)
+        report["extreme_events"]
 
-extreme_rainfall = (
+        ["heatwaves"]
 
-    report["extreme_events"]
+        ["event_count"]
+    )
 
-    ["extreme_rainfall"]
+    extreme_rainfall = (
 
-    ["event_count"]
-)
+        report["extreme_events"]
 
-col1, col2, col3, col4 = (
-    st.columns(4)
-)
+        ["extreme_rainfall"]
 
-col1.metric(
+        ["event_count"]
+    )
 
-    "Warming / Decade",
+    col1, col2, col3, col4 = (
+        st.columns(4)
+    )
 
-    f"{temperature_trend:.2f} °C"
-)
+    col1.metric(
 
-col2.metric(
+        "Warming / Decade",
 
-    "Rainfall Trend",
+        f"{temperature_trend:.2f} °C"
+    )
 
-    f"{rainfall_trend:.2f}"
-)
+    col2.metric(
 
-col3.metric(
-    "Heatwaves",
-    heatwaves
-)
+        "Rainfall Trend",
 
-col4.metric(
-    "Extreme Rainfall",
-    extreme_rainfall
-)
+        f"{rainfall_trend:.2f}"
+    )
 
-st.markdown("---")
+    col3.metric(
+        "Heatwaves",
+        heatwaves
+    )
 
-# -----------------------------------
-# DECADAL ANALYSIS
-# -----------------------------------
+    col4.metric(
+        "Extreme Rainfall",
+        extreme_rainfall
+    )
 
-st.subheader(
-    "📈 Decadal Climate Evolution"
-)
+    st.markdown("---")
 
-decadal_df = pd.DataFrame(
-    report["decadal_analysis"]
-)
+    # -----------------------------------
+    # DECADAL ANALYSIS
+    # -----------------------------------
 
-st.dataframe(decadal_df)
+    st.subheader(
+        "📈 Decadal Climate Evolution"
+    )
 
-# -----------------------------------
-# TREND ANALYSIS
-# -----------------------------------
+    decadal_df = pd.DataFrame(
+        report["decadal_analysis"]
+    )
 
-st.subheader(
-    "🔥 Climate Change Trends"
-)
+    st.dataframe(decadal_df)
 
-render_trend_chart(
+    # -----------------------------------
+    # TREND ANALYSIS
+    # -----------------------------------
 
-    decadal_df,
+    st.subheader(
+        "🔥 Climate Change Trends"
+    )
 
-    "decade",
+    render_trend_chart(
 
-    "avg_temperature",
+        decadal_df,
 
-    "Temperature Evolution"
-)
+        "decade",
 
-render_trend_chart(
+        "avg_temperature",
 
-    decadal_df,
+        "Temperature Evolution"
+    )
 
-    "decade",
+    render_trend_chart(
 
-    "rainfall",
+        decadal_df,
 
-    "Rainfall Evolution"
-)
+        "decade",
 
-st.markdown("---")
+        "rainfall",
 
-# -----------------------------------
-# EXTREME YEARS
-# -----------------------------------
+        "Rainfall Evolution"
+    )
 
-st.subheader(
-    "⚠️ Extreme Climate Years"
-)
+    st.markdown("---")
 
-st.json(
-    report["extreme_years"]
-)
+    # -----------------------------------
+    # EXTREME YEARS
+    # -----------------------------------
 
-st.markdown("---")
+    st.subheader(
+        "⚠️ Extreme Climate Years"
+    )
 
-# -----------------------------------
-# FORECAST PREVIEW
-# -----------------------------------
+    st.json(
+        report["extreme_years"]
+    )
 
-st.subheader(
-    "🔮 Forecast Preview"
-)
+    st.markdown("---")
 
-forecast = get_forecast(
+    # -----------------------------------
+    # FORECAST PREVIEW
+    # -----------------------------------
 
-    selected_state,
+    #st.subheader(
+    #    "🔮 Forecast Preview"
+    #)
 
-    horizon=12
-)
+    #forecast = get_forecast(
 
-st.json(forecast)
+    #    selected_state,
 
-st.markdown("---")
+    #    horizon=12
+    #)
 
-# -----------------------------------
-# CLIMATE NARRATIVE
-# -----------------------------------
+    #st.json(forecast)
 
-st.subheader(
-    "🧠 Climate Intelligence Summary"
-)
+    #st.markdown("---")
 
-warming_text = (
-    "warming"
-    if temperature_trend > 0
-    else "cooling"
-)
+    # -----------------------------------
+    # CLIMATE NARRATIVE
+    # -----------------------------------
 
-st.info(
+    st.subheader(
+        "🧠 Climate Intelligence Summary"
+    )
 
-    f"""
-    {selected_state} shows a long-term
-    {warming_text} trend of
-    {temperature_trend:.2f} °C
-    per decade.
+    warming_text = (
+        "warming"
+        if temperature_trend > 0
+        else "cooling"
+    )
 
-    The state has experienced
-    {heatwaves} detected heatwave
-    events and
-    {extreme_rainfall} extreme
-    rainfall events.
+    st.info(
 
-    Climate variability and
-    seasonal shifts indicate
-    ongoing environmental change.
-    """
-)
+        f"""
+        {selected_state} shows a long-term
+        {warming_text} trend of
+        {temperature_trend:.2f} °C
+        per decade.
+
+        The state has experienced
+        {heatwaves} detected heatwave
+        events and
+        {extreme_rainfall} extreme
+        rainfall events.
+
+        Climate variability and
+        seasonal shifts indicate
+        ongoing environmental change.
+        """
+    )
+
+else:
+    st.markdown("---")
+    render_alert_box(message = "No state is analysed yet!")

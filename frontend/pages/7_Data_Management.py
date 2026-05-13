@@ -21,6 +21,11 @@ from components.sidebar import (
     render_sidebar
 )
 
+from components.alert_box import (
+    render_alert_box
+)
+
+
 render_sidebar()
 
 st.title(
@@ -51,191 +56,197 @@ available_states = [
     for s in states
 ]
 
-selected_state = st.selectbox(
+if len(available_states)!=0:
 
-    "Select State",
+    selected_state = st.selectbox(
 
-    available_states
-)
+        "Select State",
 
-st.markdown("---")
-
-# -----------------------------------
-# PIPELINE ACTIONS
-# -----------------------------------
-
-st.subheader(
-    "⚙️ Pipeline Operations"
-)
-
-col1, col2, col3 = (
-    st.columns(3)
-)
-
-# -----------------------------------
-# FEATURE GENERATION
-# -----------------------------------
-
-if col1.button(
-    "Regenerate Features"
-):
-
-    response = generate_features(
-        selected_state
+        available_states
     )
 
-    st.success(response)
+    st.markdown("---")
 
-# -----------------------------------
-# RETRAIN MODELS
-# -----------------------------------
+    # -----------------------------------
+    # PIPELINE ACTIONS
+    # -----------------------------------
 
-if col2.button(
-    "Retrain Models"
-):
-
-    response = train_state(
-        selected_state
+    st.subheader(
+        "⚙️ Pipeline Operations"
     )
 
-    st.success(response)
-
-# -----------------------------------
-# REGENERATE ANALYSIS
-# -----------------------------------
-
-if col3.button(
-    "Regenerate Analysis"
-):
-
-    response = run_analysis(
-        selected_state
+    col1, col2, col3 = (
+        st.columns(3)
     )
 
-    st.success(response)
+    # -----------------------------------
+    # FEATURE GENERATION
+    # -----------------------------------
 
-st.markdown("---")
+    if col1.button(
+        "Regenerate Features"
+    ):
 
-# -----------------------------------
-# DESTRUCTIVE ACTIONS
-# -----------------------------------
+        response = generate_features(
+            selected_state
+        )
 
-st.subheader(
-    "⚠️ Destructive Operations"
-)
+        st.success(response)
 
-danger1, danger2, danger3 = (
-    st.columns(3)
-)
+    # -----------------------------------
+    # RETRAIN MODELS
+    # -----------------------------------
 
-# -----------------------------------
-# DELETE DATA
-# -----------------------------------
+    if col2.button(
+        "Retrain Models"
+    ):
 
-if danger1.button(
-    "Delete State Data"
-):
+        response = train_state(
+            selected_state
+        )
 
-    response = delete_state_data(
-        selected_state
+        st.success(response)
+
+    # -----------------------------------
+    # REGENERATE ANALYSIS
+    # -----------------------------------
+
+    if col3.button(
+        "Regenerate Analysis"
+    ):
+
+        response = run_analysis(
+            selected_state
+        )
+
+        st.success(response)
+
+    st.markdown("---")
+
+    # -----------------------------------
+    # DESTRUCTIVE ACTIONS
+    # -----------------------------------
+
+    st.subheader(
+        "⚠️ Destructive Operations"
     )
 
-    st.error(response)
-
-# -----------------------------------
-# DELETE MODELS
-# -----------------------------------
-
-if danger2.button(
-    "Delete Models"
-):
-
-    response = delete_models(
-        selected_state
+    danger1, danger2, danger3 = (
+        st.columns(3)
     )
 
-    st.error(response)
+    # -----------------------------------
+    # DELETE DATA
+    # -----------------------------------
 
-# -----------------------------------
-# DELETE ANALYSIS
-# -----------------------------------
+    if danger1.button(
+        "Delete State Data"
+    ):
 
-if danger3.button(
-    "Delete Analysis"
-):
+        response = delete_state_data(
+            selected_state
+        )
 
-    response = delete_analysis(
-        selected_state
+        st.error(response)
+
+    # -----------------------------------
+    # DELETE MODELS
+    # -----------------------------------
+
+    if danger2.button(
+        "Delete Models"
+    ):
+
+        response = delete_models(
+            selected_state
+        )
+
+        st.error(response)
+
+    # -----------------------------------
+    # DELETE ANALYSIS
+    # -----------------------------------
+
+    if danger3.button(
+        "Delete Analysis"
+    ):
+
+        response = delete_analysis(
+            selected_state
+        )
+
+        st.error(response)
+
+    st.markdown("---")
+
+    # -----------------------------------
+    # SYSTEM HEALTH
+    # -----------------------------------
+
+    st.subheader(
+        "🖥️ System Health"
     )
 
-    st.error(response)
+    total_states = len(states)
 
-st.markdown("---")
+    trained_states = sum(
 
-# -----------------------------------
-# SYSTEM HEALTH
-# -----------------------------------
+        1 for s in states
 
-st.subheader(
-    "🖥️ System Health"
-)
+        if s["trained"]
+    )
 
-total_states = len(states)
+    analysed_states = sum(
 
-trained_states = sum(
+        1 for s in states
 
-    1 for s in states
+        if s["analysed"]
+    )
 
-    if s["trained"]
-)
+    col1, col2, col3 = (
+        st.columns(3)
+    )
 
-analysed_states = sum(
+    col1.metric(
+        "States",
+        total_states
+    )
 
-    1 for s in states
+    col2.metric(
+        "Models Ready",
+        trained_states
+    )
 
-    if s["analysed"]
-)
+    col3.metric(
+        "Analysis Ready",
+        analysed_states
+    )
 
-col1, col2, col3 = (
-    st.columns(3)
-)
+    st.markdown("---")
 
-col1.metric(
-    "States",
-    total_states
-)
+    # -----------------------------------
+    # PLATFORM INFO
+    # -----------------------------------
 
-col2.metric(
-    "Models Ready",
-    trained_states
-)
+    st.subheader(
+        "ℹ️ Platform Information"
+    )
 
-col3.metric(
-    "Analysis Ready",
-    analysed_states
-)
+    st.info(
+        """
+        Climate Intelligence Platform
 
-st.markdown("---")
-
-# -----------------------------------
-# PLATFORM INFO
-# -----------------------------------
-
-st.subheader(
-    "ℹ️ Platform Information"
-)
-
-st.info(
-    """
-    Climate Intelligence Platform
-
-    Features:
-    - Climate ingestion
-    - Feature engineering
-    - Recursive forecasting
-    - SARIMAX modeling
-    - Trend analysis
-    - Extreme-event analytics
-    - Climate risk assessment
-    """
-)
+        Features:
+        - Climate ingestion
+        - Feature engineering
+        - Recursive forecasting
+        - SARIMAX modeling
+        - Trend analysis
+        - Extreme-event analytics
+        - Climate risk assessment
+        """
+    )
+    
+else:
+    st.markdown("---")
+    render_alert_box(message = "No state is registered. Please register a state from Home menu in the sidebar")
