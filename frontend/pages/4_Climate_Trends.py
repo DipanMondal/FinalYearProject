@@ -17,12 +17,16 @@ from components.charts import (
 
     render_trend_chart,
 
-    render_decadal_bar_chart
+    render_decadal_bar_chart,
+    
+    render_yearly_decadal_trend_chart
 )
 
 from components.alert_box import (
     render_alert_box
 )
+
+from utils.report_transformers import build_yearly_average_df
 
 from utils.page_layout import setup_page
 
@@ -85,6 +89,18 @@ if len(available_states)!=0:
 
     decadal_df = pd.DataFrame(
         decadal_analysis
+    )
+    
+    yearly_temperature_df = build_yearly_average_df(
+        report,
+        metric_key="temperature",
+        output_column="avg_temperature"
+    )
+    
+    yearly_rainfall_df = build_yearly_average_df(
+        report,
+        metric_key="rainfall",
+        output_column="rainfall"
     )
 
     # -----------------------------------
@@ -184,15 +200,23 @@ if len(available_states)!=0:
         "🔥 Temperature Evolution"
     )
 
-    render_trend_chart(
+    render_yearly_decadal_trend_chart(
 
-        decadal_df,
+        yearly_df=yearly_temperature_df,
 
-        "decade",
+        decadal_df=decadal_df,
 
-        "avg_temperature",
+        yearly_x_column="year",
 
-        "Decadal Temperature Change"
+        yearly_y_column="avg_temperature",
+
+        decadal_x_column="decade",
+
+        decadal_y_column="avg_temperature",
+
+        title="Yearly Temperature Evolution with Decadal Highlights",
+
+        y_label="Temperature (°C)"
     )
 
     render_decadal_bar_chart(
@@ -220,15 +244,23 @@ if len(available_states)!=0:
         "🌧️ Rainfall Evolution"
     )
 
-    render_trend_chart(
+    render_yearly_decadal_trend_chart(
 
-        decadal_df,
+        yearly_df=yearly_rainfall_df,
 
-        "decade",
+        decadal_df=decadal_df,
 
-        "rainfall",
+        yearly_x_column="year",
 
-        "Decadal Rainfall Change"
+        yearly_y_column="rainfall",
+
+        decadal_x_column="decade",
+
+        decadal_y_column="rainfall",
+
+        title="Rainfall Evolution",
+
+        y_label="Rainfall"
     )
 
     render_decadal_bar_chart(

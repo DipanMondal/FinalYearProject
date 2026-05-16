@@ -31,6 +31,10 @@ setup_page(
 
 from utils.styles import apply_global_styles
 
+
+from utils.chart_colors import CLIMATE_VOLATILITY_COLORS
+
+
 apply_global_styles()
 
 render_sidebar()
@@ -226,7 +230,8 @@ if len(available_states)!=0:
     )
 
     render_volatility_chart(
-        volatility_analysis
+        volatility_analysis,
+        bar_color_map = CLIMATE_VOLATILITY_COLORS
     )
 
     st.markdown("---")

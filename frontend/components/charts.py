@@ -1,5 +1,7 @@
 import pandas as pd
 
+import numpy as np
+
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -121,6 +123,143 @@ def render_trend_chart(
         fig,
 
         use_container_width=True
+    )
+    
+def render_yearly_decadal_trend_chart(
+    yearly_df,
+    decadal_df,
+    yearly_x_column,
+    yearly_y_column,
+    decadal_x_column,
+    decadal_y_column,
+    title,
+    y_label
+):
+
+    fig = go.Figure()
+
+    # -----------------------------------
+    # Yearly average temperature line
+    # -----------------------------------
+
+    if not yearly_df.empty:
+
+        fig.add_trace(
+            go.Scatter(
+                x=yearly_df[yearly_x_column],
+                y=yearly_df[yearly_y_column],
+                mode="lines+markers",
+                name="Yearly Average",
+                line=dict(
+                    width=2
+                ),
+                marker=dict(
+                    size=6
+                )
+            )
+        )
+
+    # -----------------------------------
+    # Decadal highlighted points
+    # -----------------------------------
+
+    fig.add_trace(
+        go.Scatter(
+            x=decadal_df[decadal_x_column],
+            y=decadal_df[decadal_y_column],
+            mode="markers",
+            name="Decadal Average",
+            marker=dict(
+                size=15,
+                symbol="diamond",
+                line=dict(
+                    width=2
+                )
+            )
+        )
+    )
+
+    # -----------------------------------
+    # Trend line based on decadal values
+    # -----------------------------------
+
+    trend_df = decadal_df[
+        [
+            decadal_x_column,
+            decadal_y_column
+        ]
+    ].dropna()
+
+    if len(trend_df) >= 2:
+
+        x_values = trend_df[decadal_x_column].astype(float)
+        y_values = trend_df[decadal_y_column].astype(float)
+
+        slope, intercept = np.polyfit(
+            x_values,
+            y_values,
+            1
+        )
+
+        if not yearly_df.empty:
+            x_min = yearly_df[yearly_x_column].min()
+            x_max = yearly_df[yearly_x_column].max()
+        else:
+            x_min = x_values.min()
+            x_max = x_values.max()
+
+        trend_x = np.linspace(
+            x_min,
+            x_max,
+            100
+        )
+
+        trend_y = (
+            slope * trend_x
+            + intercept
+        )
+
+        fig.add_trace(
+            go.Scatter(
+                x=trend_x,
+                y=trend_y,
+                mode="lines",
+                name="Trend Line",
+                line=dict(
+                    width=3,
+                    dash="dash"
+                )
+            )
+        )
+
+    fig.update_layout(
+        title=title,
+        height=520,
+        xaxis_title="Year",
+        yaxis_title=y_label,
+        hovermode="x unified",
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        )
+    )
+    
+    fig = apply_chart_style(
+        fig = fig,
+        
+        height = 520
+    )
+
+    st.plotly_chart(
+        fig,
+        use_container_width=True,
+        config={
+            "responsive": True,
+            "displayModeBar": False
+        }
     )
     
     
