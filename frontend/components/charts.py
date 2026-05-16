@@ -221,7 +221,9 @@ def render_decadal_bar_chart(
 
     title,
 
-    y_label
+    y_label,
+    
+    bar_color = None
 ):
 
     fig = px.bar(
@@ -234,6 +236,13 @@ def render_decadal_bar_chart(
 
         title=title
     )
+    
+    if bar_color:
+        fig.update_traces(
+            marker_color=bar_color,
+            marker_line_color=bar_color,
+            opacity=0.92
+        )
 
     fig.update_layout(
 
@@ -319,7 +328,9 @@ def render_event_timeline(
     
     
 def render_volatility_chart(
-    volatility_data
+    volatility_data,
+    
+    bar_color_map=None
 ):
 
     df = pd.DataFrame({
@@ -356,6 +367,10 @@ def render_volatility_chart(
         x="Metric",
 
         y="Volatility",
+        
+        color="Metric",
+
+        color_discrete_map=bar_color_map,
 
         title="Climate Volatility"
     )

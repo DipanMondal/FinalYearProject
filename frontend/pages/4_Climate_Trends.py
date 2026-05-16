@@ -33,6 +33,8 @@ setup_page(
 
 from utils.styles import apply_global_styles
 
+from utils.chart_colors import CLIMATE_BAR_COLORS
+
 apply_global_styles()
 
 render_sidebar()
@@ -203,7 +205,9 @@ if len(available_states)!=0:
 
         "Average Temperature by Decade",
 
-        "Temperature (°C)"
+        "Temperature (°C)",
+        
+        bar_color=CLIMATE_BAR_COLORS["temperature"]
     )
 
     st.markdown("---")
@@ -237,7 +241,9 @@ if len(available_states)!=0:
 
         "Average Rainfall by Decade",
 
-        "Rainfall"
+        "Rainfall",
+        
+        bar_color=CLIMATE_BAR_COLORS["rainfall"]
     )
 
     st.markdown("---")
@@ -271,7 +277,9 @@ if len(available_states)!=0:
 
         "Average Humidity by Decade",
 
-        "Humidity"
+        "Humidity",
+        
+        bar_color=CLIMATE_BAR_COLORS["humidity"]
     )
 
     st.markdown("---")
