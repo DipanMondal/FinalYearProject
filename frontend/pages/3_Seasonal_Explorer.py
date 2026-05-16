@@ -19,12 +19,19 @@ from components.alert_box import (
     render_alert_box
 )
 
+from utils.page_layout import setup_page
+
+setup_page(
+    page_title="Seasonal Climate Explorer",
+    page_icon="🌦️"
+)
 
 render_sidebar()
 
 st.title(
     "🌦️ Seasonal Climate Explorer"
 )
+
 
 # -----------------------------------
 # STATE SELECTION

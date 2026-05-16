@@ -6,6 +6,53 @@ import plotly.graph_objects as go
 import streamlit as st
 
 
+CHART_FONT_SIZE = 18
+CHART_TITLE_SIZE = 26
+CHART_AXIS_TITLE_SIZE = 20
+CHART_LEGEND_SIZE = 17
+
+# chart config
+def apply_chart_style(fig, height=500):
+    fig.update_layout(
+        height=height,
+
+        font=dict(
+            size=CHART_FONT_SIZE
+        ),
+
+        title=dict(
+            font=dict(
+                size=CHART_TITLE_SIZE
+            )
+        ),
+
+        xaxis=dict(
+            title_font=dict(
+                size=CHART_AXIS_TITLE_SIZE
+            ),
+            tickfont=dict(
+                size=CHART_FONT_SIZE
+            )
+        ),
+
+        yaxis=dict(
+            title_font=dict(
+                size=CHART_AXIS_TITLE_SIZE
+            ),
+            tickfont=dict(
+                size=CHART_FONT_SIZE
+            )
+        ),
+
+        legend=dict(
+            font=dict(
+                size=CHART_LEGEND_SIZE
+            )
+        )
+    )
+
+    return fig
+
 def render_historical_chart(
     df,
     value_column,
@@ -28,9 +75,12 @@ def render_historical_chart(
 
         xaxis_title="Date",
 
-        yaxis_title=y_label,
-
-        height=450
+        yaxis_title=y_label
+    )
+    
+    fig = apply_chart_style(
+        fig = fig,
+        height = 450
     )
 
     st.plotly_chart(
@@ -61,8 +111,9 @@ def render_trend_chart(
         title=title
     )
 
-    fig.update_layout(
-        height=450
+    fig = apply_chart_style(
+        fig = fig,
+        height = 450
     )
 
     st.plotly_chart(
@@ -144,9 +195,12 @@ def render_seasonal_signature_chart(
 
         yaxis_title=y_label,
 
-        height=600,
-
         hovermode="x unified"
+    )
+    
+    fig = apply_chart_style(
+        fig = fig,
+        height = 600
     )
 
     st.plotly_chart(
@@ -183,11 +237,14 @@ def render_decadal_bar_chart(
 
     fig.update_layout(
 
-        height=500,
-
         xaxis_title="Decade",
 
         yaxis_title=y_label
+    )
+    
+    fig = apply_chart_style(
+        fig = fig,
+        height = 500
     )
 
     st.plotly_chart(
@@ -243,11 +300,14 @@ def render_event_timeline(
 
     fig.update_layout(
 
-        height=500,
-
         xaxis_title="Date",
 
         yaxis_title=y_label
+    )
+    
+    fig = apply_chart_style(
+        fig = fig,
+        height = 500
     )
 
     st.plotly_chart(
@@ -300,8 +360,9 @@ def render_volatility_chart(
         title="Climate Volatility"
     )
 
-    fig.update_layout(
-        height=500
+    fig = apply_chart_style(
+        fig = fig,
+        height = 500
     )
 
     st.plotly_chart(
@@ -374,9 +435,12 @@ def render_forecast_chart(
 
         yaxis_title=y_label,
 
-        height=550,
-
         hovermode="x unified"
+    )
+    
+    fig = apply_chart_style(
+        fig = fig,
+        height = 550
     )
 
     st.plotly_chart(

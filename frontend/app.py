@@ -1,17 +1,11 @@
 import streamlit as st
 
+from utils.page_layout import setup_page
 
-st.set_page_config(
 
-    page_title=(
-        "Climate Intelligence Platform"
-    ),
-
-    page_icon="🌍",
-
-    layout="wide",
-
-    initial_sidebar_state="expanded"
+setup_page(
+    page_title="Climate Intelligence Platform",
+    page_icon="🌍"
 )
 
 

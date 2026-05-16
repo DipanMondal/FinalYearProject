@@ -25,6 +25,13 @@ from components.alert_box import (
     render_alert_box
 )
 
+from utils.page_layout import setup_page
+
+setup_page(
+    page_title="Data & Model Management",
+    page_icon="🛠️"
+)
+
 
 render_sidebar()
 
@@ -42,7 +49,10 @@ st.subheader(
     "📋 State Lifecycle Status"
 )
 
-st.dataframe(states)
+st.dataframe(
+    states,
+    use_container_width=True
+)
 
 st.markdown("---")
 

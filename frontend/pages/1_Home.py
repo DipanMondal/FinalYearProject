@@ -24,6 +24,12 @@ from components.india_map import (
     render_india_map
 )
 
+from utils.page_layout import setup_page
+
+setup_page(
+    page_title="Climate Intelligence Dashboard",
+    page_icon="🌍"
+)
 
 render_sidebar()
 
@@ -61,7 +67,10 @@ st.subheader(
     "📋 State Lifecycle Status"
 )
 
-st.dataframe(states)
+st.dataframe(
+    states,
+    use_container_width=True
+)
 
 st.markdown("---")
 

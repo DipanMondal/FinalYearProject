@@ -23,6 +23,13 @@ from components.alert_box import (
     render_alert_box
 )
 
+from utils.page_layout import setup_page
+
+setup_page(
+    page_title="Climate Forecasting Center",
+    page_icon="🔮"
+)
+
 
 render_sidebar()
 

@@ -22,6 +22,12 @@ from components.alert_box import (
     render_alert_box
 )
 
+from utils.page_layout import setup_page
+
+setup_page(
+    page_title="Extreme Events & Climate Risk",
+    page_icon="⚠️"
+)
 
 render_sidebar()
 
