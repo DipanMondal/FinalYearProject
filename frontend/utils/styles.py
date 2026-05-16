@@ -137,6 +137,32 @@ def apply_global_styles():
             font-size: 16px !important;
             font-weight: 400 !important;
         }
+        
+        /* ===============================
+           Summary / Footer Info Box Styling
+           Applies to st.info(), st.warning(), st.error(), st.success()
+           =============================== */
+        [data-testid="stAlert"] {
+            padding: 0.5rem 0.5rem !important;
+            border-radius: 10px !important;
+        }
+
+        [data-testid="stAlert"] p {
+            font-size: 20px !important;
+            line-height: 1.25 !important;
+            font-weight: 500 !important;
+        }
+
+        [data-testid="stAlert"] li {
+            font-size: 20px !important;
+            line-height: 1.25 !important;
+            font-weight: 500 !important;
+        }
+
+        [data-testid="stAlert"] div {
+            font-size: 20px !important;
+            line-height: 1.25 !important;
+        }
 
         /* Responsive KPI adjustment */
         @media screen and (max-width: 768px) {
