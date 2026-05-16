@@ -79,7 +79,7 @@ def apply_global_styles():
 
         [data-testid="stMetricValue"] div {
             font-size: 34px !important;
-            font-weight: 800 !important;
+            font-weight: 400 !important;
         }
 
         /* KPI delta, if used */
@@ -91,10 +91,51 @@ def apply_global_styles():
             font-size: 16px !important;
         }
 
-        /* Sidebar markdown text */
+         /* ===============================
+           Sidebar Text
+           =============================== */
+
         section[data-testid="stSidebar"] .stMarkdown,
         section[data-testid="stSidebar"] .stMarkdown p {
             font-size: 16px !important;
+        }
+
+        /* Sidebar page navigation item */
+        section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a {
+            font-size: 16px !important;
+            font-weight: 400 !important;
+            line-height: 1.4 !important;
+            padding-top: 0.25rem !important;
+            padding-bottom: 0.25rem !important;
+        }
+
+        section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a span {
+            font-size: 15px !important;
+            font-weight: 300 !important;
+        }
+
+        /* For newer Streamlit versions */
+        section[data-testid="stSidebar"] [data-testid="stSidebarNavLink"] {
+            font-size: 16px !important;
+            font-weight: 400 !important;
+            padding-top: 0.25rem !important;
+            padding-bottom: 0.25rem !important;
+        }
+
+        section[data-testid="stSidebar"] [data-testid="stSidebarNavLink"] span {
+            font-size: 15px !important;
+            font-weight: 300 !important;
+        }
+
+        /* Active page item */
+        section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[aria-current="page"] {
+            font-size: 16px !important;
+            font-weight: 400 !important;
+        }
+
+        section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[aria-current="page"] span {
+            font-size: 16px !important;
+            font-weight: 400 !important;
         }
 
         /* Responsive KPI adjustment */
