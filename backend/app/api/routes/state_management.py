@@ -37,6 +37,9 @@ from app.services.state_status_service import (
     update_analysed_status
 )
 
+from app.core.config import settings
+from app.services.ai_analysis_service import AI_INSIGHT_FILENAME
+
 
 router = APIRouter()
 
@@ -163,6 +166,16 @@ def delete_analysis(
             report_path.unlink()
 
         db.delete(report)
+        
+    ai_report_path = (
+        Path(settings.ARTIFACTS_DIR)
+        / state
+        / AI_INSIGHT_FILENAME
+    )
+
+    if ai_report_path.exists():
+
+        ai_report_path.unlink()
         
     update_analysed_status(
         db = db,

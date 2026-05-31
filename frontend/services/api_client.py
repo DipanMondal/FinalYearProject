@@ -142,3 +142,30 @@ def delete_analysis(state):
     )
 
     return response.json()
+    
+    
+def get_ai_insight_report(
+    state
+):
+
+    response = requests.get(
+
+        f"{BASE_URL}/ai-insight/{state}"
+    )
+
+    if response.status_code != 200:
+
+        try:
+            detail = response.json().get(
+                "detail",
+                "AI insight report not found"
+            )
+        except Exception:
+            detail = "AI insight report not found"
+
+        return {
+            "success": False,
+            "error": detail
+        }
+
+    return response.json()

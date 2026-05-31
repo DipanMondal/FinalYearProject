@@ -4,6 +4,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from datetime import datetime
+
 from sqlalchemy.orm import Session
 
 from app.models.engineered_features import (
@@ -49,6 +51,10 @@ from app.utils.analysis_utils import (
     calculate_anomaly_frequency,
 
     MONTH_NAMES
+)
+
+from app.services.ai_analysis_service import (
+    generate_ai_insight_report
 )
 
 
@@ -329,14 +335,33 @@ def generate_analysis_report(
     # Save Report Registry
     # -----------------------------
 
-    report_entry = AnalysisReport(
+    report_entry = (
 
-        state=state,
+        db.query(AnalysisReport)
 
-        report_path=str(report_path)
+        .filter(AnalysisReport.state == state)
+
+        .first()
     )
 
-    db.add(report_entry)
+    if report_entry:
+
+        report_entry.report_path = str(report_path)
+
+        report_entry.generated_at = datetime.utcnow()
+
+    else:
+
+        report_entry = AnalysisReport(
+
+            state=state,
+
+            report_path=str(report_path),
+
+            generated_at=datetime.utcnow()
+        )
+
+        db.add(report_entry)
 
     db.commit()
 
@@ -372,7 +397,29 @@ def generate_analysis_report(
         )
     )
 
-    return report
-    
-    
+    # -----------------------------
+    # AI Insight Unit
+    # -----------------------------
+    # This is intentionally part of the existing analysis pipeline.
+    # When /analysis/{state} runs, the statistical report is created first,
+    # then the AI insight report is generated and stored separately.
 
+    ai_report = generate_ai_insight_report(
+
+        db=db,
+
+        state=state,
+
+        forecast_horizon=12
+    )
+
+    report["ai_insight"] = {
+
+        "success": ai_report.get("success", False),
+
+        "report_path": ai_report.get("report_path"),
+
+        "error": ai_report.get("error")
+    }
+
+    return report

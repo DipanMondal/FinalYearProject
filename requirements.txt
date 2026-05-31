@@ -17,3 +17,5 @@ meteostat
 requests
 loguru
 joblib
+langchain
+langchain-google-genai

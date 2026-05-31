@@ -14,6 +14,10 @@ class Settings(BaseSettings):
     API_PORT: int
 
     DEBUG: bool = True
+    
+    GOOGLE_API_KEY: str | None = None
+    GEMINI_MODEL: str = "gemini-2.5-flash-lite"
+    GEMINI_TEMPERATURE: float = 0.2
 
     class Config:
         env_file = ".env"

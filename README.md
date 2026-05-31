@@ -36,7 +36,7 @@ climate-intelligence-platform/
 
 ---
 
-## Sample .env
+## Sample backend\.env
 ```
 APP_NAME=Climate Intelligence Platform
 
@@ -49,6 +49,10 @@ LOGS_DIR=backend/logs
 API_HOST=127.0.0.1
 API_PORT=8000
 DEBUG=True
+
+GOOGLE_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-2.5-flash
+GEMINI_TEMPERATURE=0.2
 ```
 
 ---
