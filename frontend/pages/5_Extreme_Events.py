@@ -168,7 +168,7 @@ if len(available_states)!=0:
 
         "temperature",
 
-        "Heatwave Events",
+        f"{selected_state} Heatwave Events",
 
         "Temperature (°C)"
     )
@@ -191,7 +191,7 @@ if len(available_states)!=0:
 
         "rainfall",
 
-        "Extreme Rainfall Events",
+        f"{selected_state} Extreme Rainfall Events",
 
         "Rainfall"
     )
@@ -214,7 +214,7 @@ if len(available_states)!=0:
 
         "humidity",
 
-        "High Humidity Events",
+        f"{selected_state} High Humidity Events",
 
         "Humidity"
     )
@@ -231,7 +231,8 @@ if len(available_states)!=0:
 
     render_volatility_chart(
         volatility_analysis,
-        bar_color_map = CLIMATE_VOLATILITY_COLORS
+        bar_color_map = CLIMATE_VOLATILITY_COLORS,
+        state_name = selected_state
     )
 
     st.markdown("---")

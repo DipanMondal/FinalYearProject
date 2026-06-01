@@ -214,7 +214,7 @@ if len(available_states)!=0:
 
         decadal_y_column="avg_temperature",
 
-        title="Yearly Temperature Evolution with Decadal Highlights",
+        title=f"{selected_state} Yearly Temperature Evolution with Decadal Highlights",
 
         y_label="Temperature (°C)"
     )
@@ -227,7 +227,7 @@ if len(available_states)!=0:
 
         "avg_temperature",
 
-        "Average Temperature by Decade",
+        f"{selected_state} Average Temperature by Decade",
 
         "Temperature (°C)",
         
@@ -258,7 +258,7 @@ if len(available_states)!=0:
 
         decadal_y_column="rainfall",
 
-        title="Rainfall Evolution",
+        title=f"{selected_state} Rainfall Evolution",
 
         y_label="Rainfall"
     )
@@ -271,7 +271,7 @@ if len(available_states)!=0:
 
         "rainfall",
 
-        "Average Rainfall by Decade",
+        f"{selected_state} Average Rainfall by Decade",
 
         "Rainfall",
         
@@ -296,7 +296,7 @@ if len(available_states)!=0:
 
         "humidity",
 
-        "Decadal Humidity Change"
+        f"{selected_state} Decadal Humidity Change"
     )
 
     render_decadal_bar_chart(
@@ -307,7 +307,7 @@ if len(available_states)!=0:
 
         "humidity",
 
-        "Average Humidity by Decade",
+        f"{selected_state} Average Humidity by Decade",
 
         "Humidity",
         

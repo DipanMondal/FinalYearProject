@@ -263,7 +263,7 @@ if len(available_states)!=0:
 
         "prediction",
 
-        "Temperature Projection",
+        f"{selected_state} Temperature Projection",
 
         "Temperature (°C)"
     )
@@ -288,7 +288,7 @@ if len(available_states)!=0:
 
         "prediction",
 
-        "Rainfall Projection",
+        f"{selected_state} Rainfall Projection",
 
         "Rainfall"
     )
@@ -313,7 +313,7 @@ if len(available_states)!=0:
 
         "prediction",
 
-        "Humidity Projection",
+        f"{selected_state} Humidity Projection",
 
         "Humidity"
     )

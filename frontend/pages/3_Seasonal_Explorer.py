@@ -138,7 +138,7 @@ if len(available_states)!=0:
         months=months,
 
         title=(
-            "Multi-Year Temperature "
+            f"{selected_state} Multi-Year Temperature "
             "Seasonal Signature"
         ),
 
@@ -167,7 +167,7 @@ if len(available_states)!=0:
         months=months,
 
         title=(
-            "Multi-Year Rainfall "
+            f"{selected_state} Multi-Year Rainfall "
             "Seasonal Signature"
         ),
 

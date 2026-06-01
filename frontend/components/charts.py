@@ -365,6 +365,25 @@ def render_decadal_bar_chart(
     bar_color = None
 ):
 
+    label_suffix = ""
+
+    y_label_lower = y_label.lower()
+
+    if "temperature" in y_label_lower:
+
+        label_suffix = "°C"
+
+    elif "humidity" in y_label_lower:
+
+        label_suffix = "%"
+
+    label_values = (
+        df[y_column]
+        .round(2)
+        .astype(str)
+        + label_suffix
+    )
+
     fig = px.bar(
 
         df,
@@ -373,7 +392,9 @@ def render_decadal_bar_chart(
 
         y=y_column,
 
-        title=title
+        title=title,
+
+        text=label_values
     )
     
     if bar_color:
@@ -383,11 +404,30 @@ def render_decadal_bar_chart(
             opacity=0.92
         )
 
+    fig.update_traces(
+        textposition="inside",
+        insidetextanchor="middle",
+        textfont=dict(
+            color="#111827",
+            size=18
+        ),
+        hovertemplate=(
+            "<b>%{x}</b><br>"
+            + y_label
+            + ": %{text}<extra></extra>"
+        )
+    )
+
     fig.update_layout(
 
         xaxis_title="Decade",
 
-        yaxis_title=y_label
+        yaxis_title=y_label,
+
+        uniformtext=dict(
+            minsize=14,
+            mode="show"
+        )
     )
     
     fig = apply_chart_style(
@@ -469,7 +509,9 @@ def render_event_timeline(
 def render_volatility_chart(
     volatility_data,
     
-    bar_color_map=None
+    bar_color_map=None,
+
+    state_name=None
 ):
 
     df = pd.DataFrame({
@@ -499,6 +541,21 @@ def render_volatility_chart(
         ]
     })
 
+    df["Label"] = df.apply(
+        lambda row: (
+            f"{row['Volatility']:.2f}%"
+            if row["Metric"] == "Humidity"
+            else f"{row['Volatility']:.2f}"
+        ),
+        axis=1
+    )
+
+    chart_title = (
+        f"{state_name} Climate Volatility"
+        if state_name
+        else "Climate Volatility"
+    )
+
     fig = px.bar(
 
         df,
@@ -511,7 +568,29 @@ def render_volatility_chart(
 
         color_discrete_map=bar_color_map,
 
-        title="Climate Volatility"
+        title=chart_title,
+
+        text="Label"
+    )
+
+    fig.update_traces(
+        textposition="inside",
+        insidetextanchor="middle",
+        textfont=dict(
+            color="#111827",
+            size=18
+        ),
+        hovertemplate=(
+            "<b>%{x}</b><br>"
+            "Volatility: %{text}<extra></extra>"
+        )
+    )
+
+    fig.update_layout(
+        uniformtext=dict(
+            minsize=14,
+            mode="show"
+        )
     )
 
     fig = apply_chart_style(

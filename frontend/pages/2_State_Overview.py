@@ -180,7 +180,7 @@ if len(available_states)!=0:
 
         "avg_temperature",
 
-        "Temperature Evolution"
+        f"{selected_state} Temperature Evolution"
     )
 
     render_trend_chart(
@@ -191,7 +191,7 @@ if len(available_states)!=0:
 
         "rainfall",
 
-        "Rainfall Evolution"
+        f"{selected_state} Rainfall Evolution"
     )
 
     st.markdown("---")
